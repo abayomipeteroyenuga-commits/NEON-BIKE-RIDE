@@ -13,3 +13,22 @@ Upload the whole folder to your domain and open `index.html`. For local testing,
 - Clear square mission box with current objective, next mission and reward.
 - Visible live GPS/minimap and tracker arrow.
 - CITY DRIVE texture/base retained but menus, HUD, mission text, POIs and labels modified for bikes.
+
+## Vercel static deployment
+
+This v30 build is static-hosting ready. Upload the contents of this ZIP so `index.html`, `css/`, `js/`, `assets/`, `vendor/`, and `vercel.json` are at the repository root.
+
+Remove old backend/local-server files before deploying:
+- server.js
+- server.mjs
+- server.py
+- server.ps1
+- api/
+- server-ready.txt
+- server-error.txt
+
+Vercel settings:
+- Framework Preset: Other
+- Build Command: leave empty
+- Output Directory: leave empty
+- Install Command: leave empty
