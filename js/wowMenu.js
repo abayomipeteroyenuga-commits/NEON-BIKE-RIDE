@@ -1,0 +1,325 @@
+/* NEON BIKE RIDE - WOW FRONT MENU / CAR SELECTION FLOW */
+(function(){
+"use strict";
+
+var state={selected:null,selectedColor:null};
+var menuWasOpenedFromBoot=true;
+
+function css(){
+ if(document.getElementById("city-wow-menu-css")) return;
+ var s=document.createElement("style");
+ s.id="city-wow-menu-css";
+ s.textContent=`
+ #cityWowMenu{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+   font-family:Inter,Arial,sans-serif;background:
+   radial-gradient(circle at 50% 15%,rgba(53,122,255,.22),transparent 38%),
+   linear-gradient(135deg,#050914 0%,#09152a 52%,#03060c 100%);color:#fff;overflow:auto}
+ #cityWowMenu .wow-shell{width:min(1180px,94vw);padding:28px 0 36px}
+ #cityWowMenu .wow-hero{text-align:center;margin-bottom:22px}
+ #cityWowMenu .wow-kicker{letter-spacing:.32em;font-size:12px;font-weight:800;color:#8fb9ff}
+ #cityWowMenu h1{margin:7px 0 4px;font-size:clamp(42px,7vw,78px);line-height:.9;letter-spacing:-.045em;text-transform:uppercase}
+ #cityWowMenu .wow-sub{margin:12px auto 0;max-width:650px;color:#b8c5d8;font-size:15px}
+ #cityWowMenu .wow-road{height:5px;width:min(520px,72vw);margin:20px auto 0;border-radius:8px;
+   background:linear-gradient(90deg,transparent,#fff,transparent);box-shadow:0 0 24px rgba(255,255,255,.32)}
+ #cityWowMenu .wow-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+ #cityWowMenu .wow-card{background:rgba(12,19,34,.82);border:1px solid rgba(255,255,255,.11);border-radius:20px;
+   padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.38);backdrop-filter:blur(14px)}
+ #cityWowMenu .wow-card h2{margin:0 0 6px;font-size:23px}
+ #cityWowMenu .wow-card p{color:#9eacc0;font-size:13px;margin:0 0 16px}
+ #cityWowMenu .car-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:390px;overflow:auto;padding-right:3px}
+ #cityWowMenu .car-btn{min-height:88px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:linear-gradient(145deg,#111b2d,#0b1220);color:#fff;
+   cursor:pointer;padding:13px;text-align:left;transition:.16s transform,.16s border,.16s background;position:relative;overflow:hidden}
+ #cityWowMenu .car-btn:hover{transform:translateY(-2px);background:#182641;border-color:rgba(110,169,255,.7)}
+ #cityWowMenu .car-btn.selected{border-color:#67a5ff;background:#16305a;box-shadow:0 0 0 2px rgba(103,165,255,.16)}
+ #cityWowMenu .car-icon{display:none!important}
+ #cityWowMenu .car-name{font-size:14px;font-weight:950;letter-spacing:.01em}
+ #cityWowMenu .car-class{font-size:10px;color:#8291a7;text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+ #cityWowMenu .selected-panel{margin-top:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;
+   border-top:1px solid rgba(255,255,255,.08);padding-top:13px}
+ #cityWowMenu .paint-palette{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}.paint-palette-label{font-size:9px;letter-spacing:.12em;color:#8090a5;font-weight:900;width:100%}.paint-swatch{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.22);cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.35);transition:.15s transform,.15s border}.paint-swatch:hover{transform:scale(1.12);border-color:#fff}.paint-swatch.active{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.2),0 0 16px rgba(255,255,255,.25)}
+ #cityWowMenu .selected-showcase{position:relative;height:235px;margin:12px 0 0;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 52% 58%,rgba(31,111,255,.10),transparent 48%),linear-gradient(145deg,#07101c,#03060b);border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+ #cityWowMenu .menu-showcase-car-v2{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block;filter:saturate(1.06) contrast(1.05);animation:menuCarShowcaseV2 4.6s ease-in-out infinite;transform-origin:center 78%;will-change:transform}
+ #cityWowMenu .showcase-label{position:absolute;top:14px;left:16px;font-size:9px;letter-spacing:.2em;color:#7890aa;font-weight:900;z-index:2}
+ #cityWowMenu .showcase-name{position:absolute;right:16px;top:13px;text-align:right;font-size:11px;font-weight:900;z-index:2}
+ @keyframes menuCarShowcaseV2{0%,100%{transform:translate3d(0,1px,0) scale(1) rotate(0deg)}35%{transform:translate3d(1px,-2px,0) scale(1.008) rotate(.12deg)}70%{transform:translate3d(-1px,-4px,0) scale(1.012) rotate(-.12deg)}}
+ #cityWowMenu .selected-name{font-size:18px;font-weight:900}
+ #cityWowMenu .selected-meta{font-size:11px;color:#94a4ba}
+ #cityWowMenu .wow-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+ #cityWowMenu button.action{border:0;border-radius:12px;padding:14px 12px;font-weight:900;cursor:pointer;font-size:14px}
+ #cityWowMenu .continue{background:#fff;color:#07101e}
+ #cityWowMenu .continue:disabled{opacity:.35;cursor:not-allowed}
+ #cityWowMenu .secondary{background:#18243a;color:#fff;border:1px solid rgba(255,255,255,.1)!important}
+ #cityWowMenu .wow-lineup{position:relative;height:150px;margin:0 0 12px;border-radius:15px;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:radial-gradient(circle at 50% 55%,rgba(31,111,255,.09),transparent 52%),linear-gradient(145deg,#07101c,#03060b);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+ #cityWowMenu .wow-lineup img{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:contain;display:block;filter:saturate(1.06) contrast(1.05);animation:menuCarLineupV2 4.9s ease-in-out infinite;will-change:transform}
+ #cityWowMenu .wow-features{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+ #cityWowMenu .feature{padding:14px;border-radius:13px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}
+ #cityWowMenu .feature strong{display:block;font-size:13px;margin-bottom:4px}
+ #cityWowMenu .feature span{font-size:11px;color:#8f9eb4}
+ #cityWowMenu .level-card{margin-top:18px;padding:16px 18px;border-radius:16px;background:linear-gradient(90deg,rgba(44,96,180,.22),rgba(255,255,255,.035));
+   border:1px solid rgba(103,165,255,.25);display:flex;align-items:center;justify-content:space-between;gap:15px}
+ #cityWowMenu .level-badge{font-weight:900;font-size:12px;color:#8fb9ff;letter-spacing:.12em}
+
+ #cityWowMenu .wow-section-label{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+ #cityWowMenu .wow-section-label strong{font-size:11px;letter-spacing:.14em;color:#7f91a8}
+ #cityWowMenu .wow-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px}
+ #cityWowMenu .wow-tab{border:1px solid rgba(255,255,255,.09);background:#0e1728;color:#9eacc0;border-radius:9px;padding:9px 5px;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:.04em}
+ #cityWowMenu .wow-tab:hover{background:#16233a;color:#fff}
+ #cityWowMenu .wow-tab.active{color:#fff;border-color:var(--tab-accent);background:color-mix(in srgb,var(--tab-accent) 18%,#0e1728);box-shadow:0 0 0 1px color-mix(in srgb,var(--tab-accent) 25%,transparent)}
+ #cityWowMenu .wow-tab[data-filter="car"]{--tab-accent:#00d4ff}
+ #cityWowMenu .wow-tab[data-filter="suv"]{--tab-accent:#00ff9d}
+  #cityWowMenu .wow-tab[data-filter="commercial"]{--tab-accent:#ffb52e}
+ #cityWowMenu .car-btn{position:relative}
+ #cityWowMenu .car-btn .car-type-chip{display:inline-block;margin-top:4px;padding:2px 5px;border-radius:4px;font-size:8px;font-weight:900;letter-spacing:.06em;background:rgba(255,255,255,.06);color:#8fa0b8}
+ #cityWowMenu .car-btn[data-type="car"]{--type-accent:#00d4ff}
+ #cityWowMenu .car-btn[data-type="suv"]{--type-accent:#00ff9d}
+  #cityWowMenu .car-btn[data-type="commercial"]{--type-accent:#ffb52e}
+ #cityWowMenu .car-btn.selected{border-color:var(--type-accent,#67a5ff);box-shadow:0 0 0 2px color-mix(in srgb,var(--type-accent,#67a5ff) 20%,transparent)}
+ @media(max-width:760px){#cityWowMenu .wow-grid{grid-template-columns:1fr}.car-grid{grid-template-columns:repeat(2,1fr)!important}}
+ #cityWowMenu:has(.front-shell){background:#03060c;overflow:hidden}
+ #cityWowMenu .front-shell{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(circle at 72% 62%,rgba(0,212,255,.15),transparent 24%),radial-gradient(circle at 80% 20%,rgba(123,92,255,.12),transparent 30%),linear-gradient(115deg,#02040a 0%,#07101d 48%,#02050a 100%)}
+ #cityWowMenu .front-shell:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(0,0,0,.55) 0 42%,transparent 66%),linear-gradient(180deg,transparent 58%,rgba(0,0,0,.7));pointer-events:none}
+ #cityWowMenu .front-noise{position:absolute;inset:0;opacity:.06;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:70px 70px;transform:perspective(500px) rotateX(58deg) translateY(35%);transform-origin:center bottom}
+ #cityWowMenu .front-top{position:absolute;top:30px;left:5vw;right:5vw;display:flex;justify-content:space-between;align-items:center;z-index:5;font-weight:900;letter-spacing:.18em;font-size:.7rem}.front-brand{color:#fff}.front-live{color:#8191a7}.front-live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#00ff9d;box-shadow:0 0 14px #00ff9d;margin-right:7px}
+ #cityWowMenu .front-copy{position:absolute;z-index:5;left:6vw;top:18%;max-width:520px}.front-kicker{color:#00d4ff;font-size:.68rem;font-weight:900;letter-spacing:.27em;margin-bottom:14px}.front-copy h1{font-size:clamp(4.5rem,10vw,9rem);line-height:.76;margin:0;font-weight:1000;letter-spacing:-.07em;text-shadow:0 18px 60px #000}.front-copy h1 em{font-style:normal;background:linear-gradient(90deg,#fff,#00d4ff 60%,#7b5cff);-webkit-background-clip:text;color:transparent}.front-copy p{font-size:.92rem;letter-spacing:.25em;color:#aebdce;margin:26px 0 16px}.front-rule{width:170px;height:2px;background:linear-gradient(90deg,#00d4ff,transparent);margin-bottom:24px}.front-actions{display:flex;gap:10px}.front-actions button{border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:14px 22px;font-weight:950;letter-spacing:.08em;cursor:pointer}.front-actions #frontStart{background:#fff;color:#06101a;box-shadow:0 12px 35px rgba(255,255,255,.12)}.front-actions #frontContinue{background:rgba(8,16,29,.72);color:#fff}.front-actions button:hover{transform:translateY(-2px);filter:brightness(1.08)}.front-copy>small{display:block;margin-top:16px;color:#60728a;font-size:.54rem;letter-spacing:.16em}
+ #cityWowMenu .front-car{position:absolute;z-index:3;right:-3vw;bottom:2%;width:min(88vw,1450px);height:72vh;min-height:320px;pointer-events:none;animation:frontCarFloatV2 5.2s ease-in-out infinite;will-change:transform}
+ #cityWowMenu .menu-supercar-v2{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block;filter:saturate(1.08) contrast(1.06);animation:frontCarRealMotionV2 5.2s ease-in-out infinite;transform-origin:center 78%;will-change:transform}
+ @keyframes frontCarFloatV2{0%,100%{transform:translate3d(0,0,0) rotateY(-1deg)}50%{transform:translate3d(-4px,-6px,0) rotateY(1deg)}}
+ @keyframes frontCarRealMotionV2{0%,100%{transform:translate3d(0,0,0) scale(1)}25%{transform:translate3d(2px,-1px,0) scale(1.004)}50%{transform:translate3d(-1px,-5px,0) scale(1.012)}75%{transform:translate3d(-2px,-2px,0) scale(1.006)}}
+ @keyframes menuCarLineupV2{0%,100%{transform:translate3d(0,1px,0) scale(1)}50%{transform:translate3d(0,-4px,0) scale(1.01)}}
+ #cityWowMenu .front-footer{position:absolute;z-index:5;bottom:22px;left:5vw;right:5vw;display:flex;justify-content:space-between;color:#52647a;font-size:.5rem;letter-spacing:.18em}.front-footer span:nth-child(2){color:#7d8da1}
+ @media(max-width:800px){#cityWowMenu .front-top{top:18px}.front-copy{left:7vw;top:15%;max-width:78vw}.front-copy h1{font-size:clamp(3.8rem,18vw,6rem)}.front-copy p{font-size:.65rem}.front-car{right:-10vw!important;bottom:10%!important;width:112vw!important;height:48vh!important;opacity:.86}.front-actions{flex-direction:column;width:190px}.front-actions button{padding:12px}.front-footer span:nth-child(2){display:none}}
+ #cityWowMenu button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ @media(max-width:520px){#cityWowMenu .wow-shell{width:94vw;padding:14px 0 22px}#cityWowMenu .wow-hero{margin-bottom:12px}#cityWowMenu .wow-kicker{font-size:9px;letter-spacing:.22em}#cityWowMenu h1{font-size:clamp(34px,12vw,54px)}#cityWowMenu .wow-sub{font-size:12px;line-height:1.45}#cityWowMenu .wow-card{padding:15px}.car-grid{max-height:310px}.selected-showcase{height:155px!important}.wow-actions{grid-template-columns:1fr!important}}
+ @media(max-width:800px){#cityWowMenu .front-shell{overflow:auto;min-height:100%;height:auto}.front-top{top:max(16px,env(safe-area-inset-top))!important}.front-copy{top:12%!important}.front-car{bottom:12%!important;opacity:.78}.front-footer{bottom:max(12px,env(safe-area-inset-bottom))!important}}
+ @media(max-width:520px){#cityWowMenu .front-copy{left:6vw!important;top:13%!important;max-width:88vw!important}.front-copy h1{font-size:clamp(3.2rem,17vw,5.2rem)!important}.front-copy p{letter-spacing:.12em!important;line-height:1.45}.front-actions{width:min(220px,60vw)!important}.front-car{right:-30vw!important;width:132vw!important;height:42vh!important;bottom:9%!important;opacity:.7!important}.front-footer{font-size:.42rem!important;left:6vw!important;right:6vw!important}}
+ @media(max-height:520px) and (orientation:landscape){#cityWowMenu .front-copy{top:10%!important}.front-copy h1{font-size:clamp(2.7rem,10vw,5rem)!important}.front-copy p{margin:12px 0 8px!important}.front-actions{flex-direction:row!important;width:auto!important}.front-car{height:58vh!important;bottom:2%!important;right:-4vw!important;width:78vw!important;opacity:.78!important}}
+  `;
+ document.head.appendChild(s);
+}
+
+function getCars(){
+ // NEON BIKE RIDE: always prefer the authoritative motorcycle catalog.
+ // The old CITY DRIVE street-car helper may still be present for legacy pages,
+ // but it must never override bike selection.
+ var v=window.VEHICLES || window.BIKES;
+ if(Array.isArray(v)) return v.map(function(x){return {...x};});
+ if(v&&typeof v==="object") return Object.entries(v).map(function(x){return {id:x[0],...x[1]};});
+ var c=window.CityDriveRealStreetCars&&window.CityDriveRealStreetCars.catalog;
+ if(c) return Object.entries(c).map(function(x){return {id:x[0],...x[1]};});
+ return [];
+}
+
+function openVehicleSelection(){
+ css();
+ var old=document.getElementById("cityWowMenu"); if(old) old.remove();
+ var cars=getCars();
+ var existingGame=window.game||window.firstGame||window.cityDriveGame;
+ var campaignLevel=Math.max(1,Math.min(20,Number(existingGame?.state?.player?.campaignLevel)||1));
+ // Always use the authoritative vehicle database and keep the required catalog at 15.
+ if(cars.length>15) cars=cars.slice(0,15);
+ var el=document.createElement("div"); el.id="cityWowMenu";
+ el.innerHTML=`<div class="wow-shell">
+   <div class="wow-hero">
+     <div class="wow-kicker">ETHAN DIGITAL ACADEMY PRESENTS</div>
+     <h1>NEON BIKE RIDE</h1>
+     <div class="wow-sub">A neon superbike route. GPS missions. Two-tyre power bikes. Choose your ride and start the mission.</div>
+     <div class="wow-road"></div>
+   </div>
+   <div class="wow-grid">
+     <section class="wow-card">
+       <h2>Choose Your Bike</h2>
+       <p>Your selected bike becomes your ride when the mission begins.</p>
+       <div class="wow-section-label"><strong>SELECT BY CATEGORY</strong><span id="wowCarCount">15 BIKES</span></div>
+       <div class="wow-tabs" id="wowTabs">
+         <button class="wow-tab active" data-filter="all">ALL</button>
+         <button class="wow-tab" data-filter="car">SPORT</button>
+         <button class="wow-tab" data-filter="suv">HYPER</button>
+         <button class="wow-tab" data-filter="commercial">ADVENTURE</button>
+       </div>
+       <div class="car-grid" id="wowCarGrid"></div>
+       <div class="selected-showcase"><img class="menu-showcase-car-v2" id="wowShowcasePhoto" src="assets/neon-bike-menu-superbike.svg?v=20260907" alt="Fictional neon superbike"/><div class="showcase-label">SELECTED BIKE</div><div class="showcase-name" id="wowShowcaseName">TITAN X4</div></div>
+       <div class="selected-panel">
+         <div><div class="selected-name" id="wowSelectedName">Choose a bike</div><div class="selected-meta" id="wowSelectedMeta">Level 1 is locked until you choose.</div></div>
+         <div>🏍️</div>
+       </div>
+       <div class="paint-palette" id="wowPaintPalette"><div class="paint-palette-label">CHOOSE YOUR PAINT COLOR</div></div>
+       <div class="wow-actions">
+         <button class="action secondary" id="wowBack">Back</button>
+         <button class="action continue" id="wowStart" disabled>START LEVEL ${campaignLevel}</button>
+       </div>
+     </section>
+     <section class="wow-card">
+       <h2>Mission Control</h2>
+       <p>Start the bike, follow the tracker, complete the current mission, then unlock the next one.</p>
+       <div class="wow-lineup single-ride" aria-label="NEON BIKE RIDE featured vehicle"><img src="assets/neon-bike-menu-superbike.svg?v=20260907" alt="Fictional neon superbike"/></div>
+       <div class="wow-features">
+         <div class="feature"><strong>🏍️ Open Bike Route</strong><span>Roads, districts and points of interest.</span></div>
+         <div class="feature"><strong>🛣️ Route Traffic</strong><span>Bike-sized traffic and route movement.</span></div>
+         <div class="feature"><strong>🏁 Level 1</strong><span>Your first riding mission begins after selection.</span></div>
+         <div class="feature"><strong>🎮 Full Control</strong><span>Keyboard and game controls ready.</span></div>
+       </div>
+       <div class="level-card"><div><div class="level-badge">MISSION ${String(campaignLevel).padStart(2,'0')}</div><strong>COASTAL TRAINING RIDE</strong></div><span>🔒 Choose a bike first</span></div>
+     </section>
+   </div>
+ </div>`;
+ document.body.appendChild(el);
+
+ var grid=el.querySelector("#wowCarGrid");
+ var palette=[
+   {name:'Emerald Green',hex:0x1f5b3a},
+   {name:'Pearl White',hex:0xf2f4f5},
+   {name:'Obsidian Black',hex:0x111318},
+   {name:'Crimson Red',hex:0xc51f32},
+   {name:'Electric Blue',hex:0x1f6fff},
+   {name:'Champagne Gold',hex:0xd4a72c},
+   {name:'Royal Purple',hex:0x6d3fd1},
+   {name:'Sunset Orange',hex:0xf27a21}
+ ];
+ var paintPalette=el.querySelector('#wowPaintPalette');
+ palette.forEach(function(pc){ var sw=document.createElement('button'); sw.className='paint-swatch'; sw.type='button'; sw.title=pc.name; sw.setAttribute('aria-label',pc.name); sw.dataset.color=pc.hex.toString(16); sw.style.background='#'+pc.hex.toString(16).padStart(6,'0'); paintPalette.appendChild(sw); });
+ function syncPalette(car){
+   var current=Number(state.selectedColor ?? car?.customization?.primaryColor ?? car?.color ?? palette[0].hex)>>>0;
+   paintPalette.querySelectorAll('.paint-swatch').forEach(function(sw){ sw.classList.toggle('active',sw.dataset.color.toLowerCase()===current.toString(16).padStart(6,'0').toLowerCase()); });
+ }
+ function carType(car){
+   var sp=Number(car.topSpeed||0), off=Number(car.offroad||0);
+   if(off>=70) return 'commercial'; // displayed as ADVENTURE
+   if(sp>=285) return 'suv';       // displayed as HYPER
+   return 'car';                   // displayed as SPORT
+ }
+ if(!cars.length){
+   grid.innerHTML='<div style="grid-column:1/-1;padding:24px;text-align:center;color:#ff8d8d;border:1px solid rgba(255,100,100,.25);border-radius:12px">BIKES ARE STILL LOADING — PLEASE WAIT A MOMENT.</div>';
+ }
+ cars.forEach(function(car){
+   car._wowType=carType(car);
+   var b=document.createElement("button"); b.className="car-btn"; b.dataset.type=car._wowType;
+   b.innerHTML='<div class="car-name">'+(car.name||car.id)+'</div><div class="car-class">'+(car.manufacturer||"NEON BIKE RIDE")+' • '+(car.class||car.type||"street")+'</div><span class="car-type-chip">'+(car._wowType==='suv'?'HYPER':car._wowType==='commercial'?'ADVENTURE':'SPORT')+'</span>';
+   b.onclick=function(){
+     state.selected=car.id;
+     state.selectedColor=Number(car.customization?.primaryColor ?? car.color ?? palette[0].hex)>>>0;
+     grid.querySelectorAll(".car-btn").forEach(function(x){x.classList.remove("selected");});
+     b.classList.add("selected");
+     el.querySelector("#wowSelectedName").textContent=car.name||car.id;
+     el.querySelector("#wowShowcaseName").textContent=(car.name||car.id).toUpperCase();
+     el.querySelector("#wowSelectedMeta").textContent=(car.class||"street").toUpperCase()+"  •  "+(car.topSpeed?Math.round(car.topSpeed*3.6)+" km/h":"READY");
+     var photo=el.querySelector("#wowShowcasePhoto");
+     if(photo) photo.classList.add('active');
+     syncPalette(car);
+     el.querySelector("#wowStart").disabled=false;
+     el.querySelector(".level-card span").textContent="✓ Ready to start";
+   };
+   grid.appendChild(b);
+ });
+ paintPalette.querySelectorAll('.paint-swatch').forEach(function(sw){
+   sw.onclick=function(){
+     var hex=parseInt(sw.dataset.color,16)>>>0;
+     state.selectedColor=hex;
+     var car=cars.find(function(c){return c.id===state.selected;});
+     syncPalette(car);
+     var g=window.game||window.cityDriveGame||window.firstGame;
+     var owned=g?.state?.garage?.vehicles?.find(function(v){return v.id===state.selected && v.isOwned!==false;});
+     if(owned && typeof g.setVehicleColor==='function'){
+       g.setVehicleColor(owned,hex,false);
+       if(g.ui?.toast) g.ui.toast('COLOR: '+sw.title);
+     } else if(g?.ui?.toast) {
+       g.ui.toast('COLOR SAVED — IT WILL APPLY WHEN YOU OWN THIS RIDE');
+     }
+   };
+ });
+ function applyFilter(filter){
+   var visible=0;
+   grid.querySelectorAll(".car-btn").forEach(function(b){
+     var show=filter==="all" || b.dataset.type===filter;
+     b.style.display=show?"":"none";
+     if(show) visible++;
+   });
+   var count=el.querySelector("#wowCarCount"); if(count) count.textContent=visible+" BIKE"+(visible===1?"":"S");
+   el.querySelectorAll(".wow-tab").forEach(function(t){t.classList.toggle("active",t.dataset.filter===filter);});
+ }
+ el.querySelectorAll(".wow-tab").forEach(function(t){t.onclick=function(){applyFilter(t.dataset.filter);};});
+ applyFilter("all");
+ // Titan X4 is the authoritative fictional starter. Preselect it on a fresh start so the user can begin immediately.
+ var starter=cars.find(function(c){ return c.id==='metro_s' || String(c.name||'').toLowerCase().includes('titan x4'); });
+ if(starter){ var sb=[...grid.querySelectorAll('.car-btn')].find(function(b){ return b.querySelector('.car-name')?.textContent===starter.name; }); if(sb) sb.click(); }
+ el.querySelector("#wowStart").onclick=function(){
+   if(!state.selected) return;
+   try{localStorage.setItem("cityDriveSelectedVehicle",state.selected);}catch(e){}
+   // Use existing game APIs; selection is committed before the world starts.
+   var g=window.game||window.firstGame||window.cityDriveGame;
+   if(!g){
+     try{ window.CityDrivePendingVehicle=state.selected; }catch(e){}
+     var retry=function(){
+       var gg=window.game||window.firstGame||window.cityDriveGame;
+       if(!gg) return;
+       try{
+         if(typeof gg.startNew==='function' && !gg.state?.player?.name) gg.startNew('Rider');
+         if(typeof gg.driveSelectedVehicle==='function') gg.driveSelectedVehicle({id:state.selected});
+         else if(typeof gg.enterWorld==='function') gg.enterWorld(true,{startGrid:true,selectedVehicle:state.selected});
+       }catch(e){ console.error('NEON BIKE RIDE delayed start error',e); }
+       window.removeEventListener('citydrive:game-ready',retry);
+     };
+     window.addEventListener('citydrive:game-ready',retry,{once:true});
+     el.remove();
+     return;
+   }
+   try{
+     // Use the game's authoritative vehicle-selection API. This correctly
+     // activates an already-owned bike OR purchases/activates a new selection.
+     if(typeof g.driveSelectedVehicle==='function'){
+       g._pendingVehicleColor = state.selectedColor;
+       if(!g.driveSelectedVehicle({id:state.selected})) {
+         if(g.ui && typeof g.ui.toast==='function') g.ui.toast('This bike is not available yet. Complete the required mission or check your cash.');
+         return;
+       }
+     } else {
+       var v=g.state?.garage?.vehicles?.find(function(x){return x.id===state.selected;});
+       if(v){ g.state.activeVehicleUid=v.vehicleUid; g.state.activeVehicleId=v.id; if(typeof g.persist==='function') g.persist(); }
+       if(typeof g.enterWorld==='function') g.enterWorld(true,{startGrid:true,selectedVehicle:state.selected});
+     }
+   }catch(e){ console.error('NEON BIKE RIDE start error',e); return; }
+   el.remove();
+   window.dispatchEvent(new CustomEvent("neonbike:mission-start",{detail:{vehicleId:state.selected}}));
+ };
+ el.querySelector("#wowBack").onclick=function(){
+   el.remove();
+   var mm=document.getElementById('main-menu');
+   var gc=document.getElementById('game-container');
+   if(mm) mm.classList.add('hidden');
+   if(gc) gc.classList.add('hidden');
+   open();
+ };
+}
+
+function open(){
+ css();
+ var old=document.getElementById("cityWowMenu"); if(old) old.remove();
+ var el=document.createElement("div"); el.id="cityWowMenu";
+ el.innerHTML=`<div class="front-shell">
+   <div class="front-noise"></div>
+   <div class="front-top"><div class="front-brand">ETHAN DIGITAL ACADEMY</div><div class="front-live"><i></i> PRESENTS</div></div>
+   <div class="front-copy">
+     <div class="front-kicker">ETHAN DIGITAL ACADEMY PRESENTS</div>
+     <h1>NEON<br><em>BIKE</em></h1>
+     <p>YOUR BIKE. YOUR ROUTE. YOUR MISSION.</p>
+     <div class="front-rule"></div>
+     <div class="front-actions"><button id="frontStart">START RIDE</button><button id="frontContinue">CONTINUE</button></div>
+     <small>OPEN ROUTES • 20 BIKE MISSIONS • GPS • GARAGE</small>
+   </div>
+   <div class="front-car" aria-hidden="true">
+     <img class="menu-supercar-v2" src="assets/neon-bike-menu-superbike.svg?v=20260907" alt="Fictional neon superbike"/>
+   </div>
+   <div class="front-footer"><span>PACIFIC ROUTE</span><span>ETHAN DIGITAL ACADEMY</span><span>LEARN • BUILD • GROW • LEAD</span></div>
+ </div>`;
+ document.body.appendChild(el);
+ el.querySelector('#frontStart').onclick=function(){ el.remove(); openVehicleSelection(); };
+ el.querySelector('#frontContinue').onclick=function(){
+   if(!hasSaveSafe()){ if(window.game?.ui?.toast) window.game.ui.toast('No saved game found'); return; }
+   var g=window.game||window.cityDriveGame;
+   if(!g && window.dispatchEvent) { window.dispatchEvent(new CustomEvent('citydrive:game-ready')); g=window.game||window.cityDriveGame; }
+   try{ if(g&&typeof g.continueGame==='function'){ g.continueGame(); if(!g.activeMission && typeof g.startCampaignMission==='function') g.startCampaignMission(); el.remove(); } }catch(e){console.error('NEON BIKE RIDE continue error',e);}
+ };
+}
+function hasSaveSafe(){ try{return !!(localStorage.getItem('neon_bike_ride_save_v1')||localStorage.getItem('cityDriveSave')||localStorage.getItem('cityDrive_save')||localStorage.getItem('cityDriveState'));}catch(e){return false;} }
+
+window.CityDriveWowMenu={open:open};
+})();

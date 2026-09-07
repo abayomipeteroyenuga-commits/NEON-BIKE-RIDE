@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>NEON BIKE RIDE — Ride • Explore • Complete Missions</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/hud.css" />
+  <link rel="stylesheet" href="css/menus.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-content">
+      <h1 class="logo">NEON BIKE RIDE</h1>
+      <p class="tagline">RIDE • EXPLORE • COMPLETE MISSIONS</p>
+      <div class="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <p id="loading-text">Starting NEON BIKE RIDE...</p>
+    </div>
+  </div>
+
+  <!-- Main Menu / Ride Select -->
+  <div id="main-menu" class="menu-screen hidden">
+    <div class="menu-bg"></div>
+    <div class="menu-content landing-content">
+      <div class="landing-brand"><h1 class="logo">NEON BIKE RIDE</h1><p class="tagline">RIDE • EXPLORE • COMPLETE MISSIONS</p></div>
+      <div class="landing-actions">
+        <button id="btn-new-game" class="menu-btn primary menu-action-drive"><span class="menu-action-icon">▶</span><span><b>CHOOSE &amp; RIDE</b><small>Start a new rider journey</small></span></button>
+        <button id="btn-continue" class="menu-btn menu-action-continue"><span class="menu-action-icon">↻</span><span><b>CONTINUE</b><small>Resume your saved progress</small></span></button>
+      </div>
+      <div class="landing-menu-grid" aria-label="NEON BIKE RIDE features">
+        <button type="button" class="landing-menu-card campaign" data-landing-action="campaign"><span>01</span><b>CAMPAIGN</b><small>20 bike missions • GPS • rewards</small></button>
+        <button type="button" class="landing-menu-card drive" data-landing-action="drive"><span>02</span><b>FREE RIDE</b><small>Explore the neon route freely</small></button>
+        <button type="button" class="landing-menu-card garage" data-landing-action="garage"><span>03</span><b>GARAGE</b><small>Own • customize • upgrade</small></button>
+        <button type="button" class="landing-menu-card races" data-landing-action="races"><span>04</span><b>RACES &amp; JOBS</b><small>Earn cash • gain XP • progress</small></button>
+      </div>
+      <p class="landing-note">POWER BIKES <i>•</i> GPS <i>•</i> MISSIONS <i>•</i> RIDER PROGRESSION</p>
+    </div>
+  </div>
+
+  <!-- Game Canvas Container -->
+  <div id="game-container" class="hidden">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="speedometer">
+        <div class="speed-value"><span id="speed-num">000</span><span class="unit">KM/H</span></div>
+        <div class="gear" id="gear-display">P</div>
+        <div class="rpm-bar"><div id="rpm-fill"></div></div>
+      </div>
+
+      <div id="vehicle-status"><div id="vehicle-name-display">PREDATOR RR</div>
+        <div class="stat-row"><span>FUEL</span><div class="bar"><div id="fuel-bar"></div></div><span id="fuel-pct">100%</span></div>
+        <div class="stat-row"><span>COND</span><div class="bar"><div id="cond-bar"></div></div><span id="cond-pct">100%</span></div>
+        <div class="stat-row"><span>NITRO</span><div class="bar nitro"><div id="nitro-bar"></div></div></div>
+      </div>
+
+      <div id="top-bar">
+        <div id="money-display">$0</div>
+        <div id="wanted-stars"></div>
+        <div id="level-display">LVL 1</div>
+      </div>
+
+      <div id="mission-panel" class="hidden">
+        <div id="mission-title"></div>
+        <div id="mission-objective"></div>
+        <div id="mission-distance"></div>
+        <div id="mission-timer" class="hidden">TIME 3:00</div>
+        <div id="mission-help">FOLLOW THE MARKER • COMPLETE THE OBJECTIVE • GET PAID</div><div id="mission-reward"></div>
+      </div>
+
+      <div id="destination-tracker" class="hidden">
+        <div id="tracker-arrow-wrap"><span id="tracker-arrow">◆</span></div>
+        <div class="tracker-copy">
+          <span id="tracker-label">DESTINATION</span>
+          <strong id="tracker-name">YOU ARE GOING TO: DESTINATION</strong>
+          <small id="tracker-distance">0.0 KM AWAY</small>
+        </div>
+      </div>
+
+      <div id="minimap-container">
+        <canvas id="minimap" width="260" height="260"></canvas>
+      </div>
+
+      <div id="prompt" class="hidden"></div>
+      <div id="mp-board" class="hidden"></div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div id="mobile-controls" class="hidden">
+      <div class="steer-pad">
+        <button id="btn-left" class="ctrl-btn">◀</button>
+        <button id="btn-right" class="ctrl-btn">▶</button>
+      </div>
+      <div class="action-pad">
+        <button id="btn-accel" class="ctrl-btn accel">▲</button>
+        <button id="btn-brake" class="ctrl-btn brake">▼</button>
+        <button id="btn-handbrake" class="ctrl-btn">HB</button>
+        <button id="btn-nitro" class="ctrl-btn nitro">N</button>
+        <button id="btn-sprint" class="ctrl-btn">SPRINT</button>
+        <button id="btn-gyro" class="ctrl-btn">GYRO</button>
+        <button id="btn-camera" class="ctrl-btn">C</button>
+        <button id="btn-emote" class="ctrl-btn emote-btn">EMOTE</button>
+        <button id="btn-exit" class="ctrl-btn">E</button>
+        <button id="btn-pause-mobile" class="ctrl-btn">☰</button>
+      </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="menu-overlay hidden">
+      <div class="overlay-content">
+        <h2>PAUSED</h2>
+        <button id="btn-resume" class="menu-btn primary">RESUME</button>
+        <button id="btn-pause-map" class="menu-btn">MAP</button>
+        <button id="btn-pause-garage" class="menu-btn">GARAGE</button>
+        <button id="btn-pause-market" class="menu-btn">BIKE MARKET</button>
+        <button id="btn-pause-shop" class="menu-btn">RIDER SHOP</button>
+        <button id="btn-pause-ranking" class="menu-btn">RANKINGS</button>
+        <button id="btn-pause-missions" class="menu-btn">MISSIONS</button>
+        <button id="btn-pause-mp" class="menu-btn">MULTIPLAYER</button>
+        <button id="btn-pause-settings" class="menu-btn">SETTINGS</button>
+        <button id="btn-restart" class="menu-btn">RESTART</button>
+        <button id="btn-main-menu" class="menu-btn">MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UI Panels (Dealership, Garage, etc.) will be injected by JS -->
+  <div id="ui-panels"></div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="hidden"></div>
+
+  <script>
+    // Boot through a tiny non-module loader so module/network failures never
+    // leave the player permanently stuck on the loading screen.
+    (async () => {
+      const text = document.getElementById('loading-text');
+      const fill = document.getElementById('progress-fill');
+      const set = (p, msg) => {
+        if (fill) fill.style.width = `${p}%`;
+        if (text) text.textContent = msg;
+      };
+      try {
+        set(8, 'Starting NEON BIKE RIDE...');
+        await new Promise(r => requestAnimationFrame(r));
+        set(20, 'Loading game engine...');
+        await import('./js/main.js');
+      } catch (err) {
+        console.error('NEON BIKE RIDE boot failure:', err);
+        set(100, 'Game startup failed — see details below');
+        const old = document.getElementById('boot-error');
+        if (!old) {
+          const box = document.createElement('div');
+          box.id = 'boot-error';
+          box.style.cssText = 'margin-top:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.25);border-radius:10px;background:rgba(0,0,0,.45);color:#fff;font:14px/1.4 system-ui;text-align:center;max-width:520px;';
+          box.innerHTML = '<b>Game startup failed.</b><br>This offline build does not need internet, but browsers may block local ES modules when index.html is opened directly.<br><br><b>Fix:</b> open <code>start-neon-bike-ride.bat</code> from the game folder, then play at <code>the local NEON BIKE RIDE launcher URL</code>.<br><br>Details: ' + String(err?.message || err).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          document.querySelector('.loading-content')?.appendChild(box);
+        }
+      }
+    })();
+  </script>
+<script src="js/realStreetCars.js"></script>
+<script src="js/performance.js"></script>
+<script src="js/wowMenu.js"></script>
+</body>
+</html>

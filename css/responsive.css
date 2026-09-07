@@ -1,0 +1,287 @@
+/* Mobile Controls */
+#mobile-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 150;
+}
+
+#mobile-controls .ctrl-btn {
+  pointer-events: auto;
+  background: rgba(15, 20, 40, 0.7);
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  color: #e0e8f0;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  font-weight: 700;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+#mobile-controls .ctrl-btn:active {
+  background: rgba(0, 212, 255, 0.35);
+  border-color: #00d4ff;
+}
+
+.steer-pad {
+  position: absolute;
+  bottom: 40px;
+  left: 30px;
+  display: flex;
+  gap: 16px;
+}
+
+.action-pad {
+  position: absolute;
+  bottom: 30px;
+  right: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.action-pad .accel {
+  grid-column: 1 / -1;
+  border-radius: 16px;
+  height: 56px;
+  width: 140px;
+  justify-self: center;
+}
+
+.action-pad .brake {
+  height: 52px;
+  width: 64px;
+}
+
+.action-pad .nitro {
+  border-color: rgba(123, 92, 255, 0.6);
+  color: #b0a0ff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  #speedometer {
+    bottom: 20px;
+    right: 16px;
+    width: 130px;
+    padding: 10px 12px;
+  }
+  .speed-value {
+    font-size: 1.9rem;
+  }
+  #vehicle-status {
+    bottom: 20px;
+    left: 12px;
+    width: 150px;
+    font-size: 0.7rem;
+  }
+  #minimap-container {
+    width: 130px;
+    height: 130px;
+    top: 12px;
+    right: 12px;
+  }
+  #top-bar {
+    top: 12px;
+    padding: 6px 14px;
+    gap: 14px;
+    font-size: 0.9rem;
+  }
+  .logo {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #mobile-controls {
+    display: block !important;
+  }
+  #hud #vehicle-status {
+    display: none;
+  }
+  #speedometer {
+    bottom: 140px;
+  }
+}
+
+@media (min-width: 601px) {
+  #mobile-controls {
+    display: none !important;
+  }
+}
+
+/* Landscape phones */
+@media (max-height: 500px) and (orientation: landscape) {
+  #speedometer {
+    bottom: 12px;
+    right: 12px;
+    width: 110px;
+  }
+  .speed-value {
+    font-size: 1.6rem;
+  }
+  #minimap-container {
+    width: 100px;
+    height: 100px;
+  }
+  .steer-pad, .action-pad {
+    bottom: 16px;
+  }
+  #mobile-controls .ctrl-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 1.1rem;
+  }
+}
+
+#btn-sprint.active,#btn-gyro.active{box-shadow:0 0 14px rgba(0,212,255,.55);border-color:#00d4ff}
+
+/* NEON BIKE RIDE v28 — GLOBAL MISSION BOX AUTO-CROP
+   Loaded last after hud.css so every campaign level uses the same compact panel. */
+#mission-panel,
+#hud #mission-panel{
+  display:inline-flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:flex-start !important;
+  gap:1.5px !important;
+  width:fit-content !important;
+  min-width:172px !important;
+  max-width:min(282px, calc(100vw - 36px)) !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  padding:4px 6px !important;
+  margin:0 !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  border-radius:5px !important;
+  border:1.5px solid rgba(0,212,255,.72) !important;
+  border-left:4px solid #00d4ff !important;
+  background:linear-gradient(150deg,rgba(2,6,16,.96),rgba(6,18,32,.90)) !important;
+  box-shadow:0 8px 18px rgba(0,0,0,.40), inset 0 0 0 1px rgba(255,255,255,.055) !important;
+}
+#mission-panel.hidden{display:none !important;}
+#mission-panel > div{
+  flex:0 0 auto !important;
+  width:auto !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  box-sizing:border-box !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+}
+#mission-panel > div.empty-row,
+#mission-panel > div:empty,
+#mission-title.empty-row,
+#mission-objective.empty-row,
+#mission-distance.empty-row,
+#mission-help.empty-row,
+#mission-reward.empty-row,
+#mission-title:empty,
+#mission-objective:empty,
+#mission-distance:empty,
+#mission-help:empty,
+#mission-reward:empty{
+  display:none !important;
+  width:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  max-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  overflow:hidden !important;
+}
+#mission-title{
+  font-size:8.7px !important;
+  line-height:1 !important;
+  margin:0 0 1.5px !important;
+  padding:0 0 1.5px !important;
+  border-bottom:1px solid rgba(255,255,255,.10) !important;
+  letter-spacing:.12em !important;
+  font-weight:1000 !important;
+}
+#mission-objective{
+  font-size:10.8px !important;
+  line-height:1 !important;
+  margin:0 !important;
+  padding:0 !important;
+  font-weight:1000 !important;
+}
+#mission-distance,
+#mission-help,
+#mission-reward{
+  font-size:6.95px !important;
+  line-height:1 !important;
+  margin:1px 0 0 !important;
+  padding:0 !important;
+  font-weight:950 !important;
+  letter-spacing:.075em !important;
+}
+#mission-timer{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto !important;
+  max-width:max-content !important;
+  min-width:0 !important;
+  height:9.5px !important;
+  min-height:0 !important;
+  max-height:9.5px !important;
+  margin:1px 0 0 !important;
+  padding:0 3px !important;
+  font-size:6.65px !important;
+  line-height:1 !important;
+  border-radius:2.5px !important;
+  border-width:1px !important;
+  letter-spacing:.075em !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+  box-sizing:border-box !important;
+}
+#mission-timer.hidden,
+#mission-timer.empty-row{display:none !important;height:0 !important;max-height:0 !important;margin:0 !important;padding:0 !important;border:0 !important;}
+
+/* Campaign menu cards: also remove tall empty space from all level cards. */
+.campaign-list .mission-card,
+.panel-body .mission-card{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  padding:9px 10px !important;
+  margin-bottom:8px !important;
+  display:block !important;
+}
+.campaign-list .mission-card h3,
+.panel-body .mission-card h3{margin:2px 0 4px !important;line-height:1.05 !important;font-size:.94rem !important;}
+.campaign-list .mission-card p,
+.panel-body .mission-card p{margin:2px 0 !important;line-height:1.12 !important;font-size:.76rem !important;}
+.campaign-list .mission-status{margin-top:4px !important;line-height:1 !important;}
+
+@media(max-width:760px){
+  #mission-panel,
+  #hud #mission-panel{
+    top:52px !important;
+    left:7px !important;
+    min-width:155px !important;
+    max-width:min(236px, calc(100vw - 14px)) !important;
+    padding:3.5px 5px !important;
+    gap:1px !important;
+  }
+  #mission-title{font-size:7.4px !important;}
+  #mission-objective{font-size:9.3px !important;}
+  #mission-distance,#mission-help,#mission-reward{font-size:6.15px !important;}
+  #mission-timer{height:8.5px !important;max-height:8.5px !important;font-size:5.9px !important;padding:0 2.5px !important;}
+}

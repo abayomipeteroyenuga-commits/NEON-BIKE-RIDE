@@ -1,0 +1,728 @@
+#hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#speedometer {
+  position: absolute;
+  bottom: 28px;
+  right: 28px;
+  width: 160px;
+  background: rgba(8, 10, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 12px;
+  padding: 9px 11px;
+  text-align: center;
+}
+
+.speed-value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+
+.speed-value .unit {
+  font-size: 0.7rem;
+  color: #6a8aaa;
+  margin-left: 4px;
+}
+
+.gear {
+  font-size: 1.1rem;
+  color: #00d4ff;
+  margin: 4px 0 8px;
+  font-weight: 600;
+}
+
+.rpm-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#rpm-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00d4ff, #ff4d8d);
+  transition: width 0.08s linear;
+}
+
+#vehicle-name-display{font-size:.9rem;font-weight:950;letter-spacing:.08em;color:#fff;margin-bottom:9px;text-transform:uppercase;text-shadow:0 0 12px rgba(0,212,255,.35)}
+
+#vehicle-status {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  width: 180px;
+  background: rgba(8, 10, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.75rem;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.stat-row:last-child {
+  margin-bottom: 0;
+}
+
+.stat-row span:first-child {
+  width: 42px;
+  color: #8a9aaa;
+  font-weight: 600;
+}
+
+.stat-row .bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-row .bar div {
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  transition: width 0.2s;
+}
+
+#fuel-bar { background: linear-gradient(90deg, #ffaa00, #00d4ff); }
+#cond-bar { background: linear-gradient(90deg, #ff4d4d, #00ff88); }
+#nitro-bar { background: linear-gradient(90deg, #7b5cff, #00d4ff); }
+
+.stat-row span:last-child {
+  width: 36px;
+  text-align: right;
+  color: #c0c8d8;
+}
+
+#top-bar {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(8, 10, 20, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 10px;
+  padding: 8px 22px;
+}
+
+#money-display {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #00ff9d;
+}
+
+#wanted-stars {
+  color: #ffcc00;
+  letter-spacing: 2px;
+  font-size: 1rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+#level-display {
+  font-size: 0.9rem;
+  color: #7b5cff;
+  font-weight: 600;
+}
+
+#mission-panel {
+  box-shadow: 0 10px 30px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  position: absolute;
+  top: 48px;
+  left: 24px;
+  transform: none;
+  width: min(300px, calc(38vw - 34px));
+  min-width: 0;
+  height: 158px;
+  max-height: 158px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: flex-start;
+  background: rgba(8, 10, 20, 0.9);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  padding: 11px 12px;
+  text-align: left;
+}
+
+#mission-title {
+  flex:0 0 auto;
+  overflow-wrap:anywhere;
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #00d4ff;
+  margin-bottom: 4px;
+}
+
+#mission-objective {
+  flex:0 0 auto;
+  overflow-wrap:anywhere;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #c0c8d8;
+}
+
+#mission-distance {
+  flex:0 0 auto;
+  overflow-wrap:anywhere;
+  font-size: 0.8rem;
+  color: #8a9aaa;
+  margin-top: 4px;
+}
+
+#mission-timer{
+  flex:0 0 auto;
+  width:100%;
+  box-sizing:border-box;
+  margin-top:2px;
+  padding:6px 8px;
+  border:1px solid rgba(255,204,51,.45);
+  border-radius:9px;
+  background:rgba(255,204,51,.08);
+  color:#ffcc33;
+  font-size:.78rem;
+  line-height:1.15;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#mission-timer.urgent{color:#ff5a5a;border-color:rgba(255,90,90,.6);background:rgba(255,90,90,.1);animation:missionTimerPulse 1s ease-in-out infinite}
+@keyframes missionTimerPulse{50%{transform:scale(1.015)}}
+
+#minimap-container {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 212, 255, 0.35);
+  background: rgba(10, 15, 30, 0.9);
+}
+
+#minimap {
+  width: 100%;
+  height: 100%;
+}
+
+#prompt {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 212, 255, 0.15);
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #00d4ff;
+  letter-spacing: 0.05em;
+}
+
+#mp-board {
+  position: absolute;
+  top: 70px;
+  left: 18px;
+  min-width: 180px;
+  background: rgba(8, 10, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+#mp-board .you { color: #00ff9d; font-weight: 700; }
+#mission-help{flex:0 0 auto;font-size:.68rem;color:#7fd8ff;margin-top:2px;letter-spacing:.06em;font-weight:700;line-height:1.35;overflow-wrap:anywhere;word-break:break-word}
+
+#mission-reward{flex:0 0 auto;margin-top:2px;font-size:.72rem;font-weight:800;color:#00ff9d;letter-spacing:.04em;line-height:1.35;overflow-wrap:anywhere;word-break:break-word}
+.campaign-brief{display:flex;flex-direction:column;gap:8px}
+.campaign-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.mission-card.campaign-active{border-color:#00ff9d;box-shadow:0 0 18px rgba(0,255,157,.12)}
+.mission-card.campaign-done{opacity:.78;border-color:rgba(0,255,157,.28)}
+.mission-reward{color:#aab6c8}.mission-status{display:inline-block;margin-top:8px;font-size:.65rem;font-weight:900;letter-spacing:.08em;color:#00ff9d}
+@media(max-width:600px){.campaign-list{grid-template-columns:1fr}}
+
+.city-map-wrap{display:flex;flex-direction:column;gap:10px}.city-map-info{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:6px 12px;align-items:center;font-size:.8rem;color:#9aa}.city-map-info strong{color:#00ff9d;font-size:.68rem;letter-spacing:.08em}.city-map-info .map-dest-label{color:#ffcc33}.map-no-route{grid-column:1/-1;color:#9aa}.city-map-wrap canvas{width:100%;height:min(62vh,560px);display:block;border:1px solid #263746;border-radius:12px;background:#08111a}.city-map-legend{display:flex;gap:14px;flex-wrap:wrap;color:#aab6c8;font-size:.7rem;font-weight:800}.map-actions{display:flex;gap:8px;flex-wrap:wrap}.map-destination-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:7px}.map-destination-list.hidden{display:none}
+@media(max-width:600px){.city-map-info{grid-template-columns:1fr 1fr}.city-map-wrap canvas{height:52vh}.city-map-legend{font-size:.62rem}}
+.daily-challenge-card{margin-bottom:16px;padding:16px;border:1px solid rgba(255,204,51,.45);border-radius:14px;background:linear-gradient(135deg,rgba(255,204,51,.09),rgba(0,212,255,.05));box-shadow:0 0 24px rgba(255,204,51,.08)}
+.daily-challenge-card.daily-done{border-color:rgba(0,255,157,.45)}
+.daily-badge{font-size:.62rem;font-weight:900;letter-spacing:.15em;color:#ffcc33}.daily-challenge-card h2{margin:5px 0;font-size:1.2rem}.daily-progress{font-size:1rem;font-weight:900;color:#00ff9d;margin:8px 0}
+
+/* LIVE DESTINATION TRACKER — square, self-contained and always separated from minimap */
+#minimap-container{z-index:24;box-sizing:border-box}
+#destination-tracker{position:fixed;top:208px;right:18px;left:auto;transform:none;z-index:26;display:grid;grid-template-rows:44px 1fr;align-items:center;justify-items:center;gap:7px;width:180px;height:180px;min-width:180px;max-width:180px;box-sizing:border-box;padding:12px;border:1px solid var(--tracker-color,#00d4ff);border-top:4px solid var(--tracker-color,#00d4ff);border-radius:14px;background:rgba(4,10,16,.94);box-shadow:0 0 22px color-mix(in srgb,var(--tracker-color,#00d4ff) 30%,transparent);backdrop-filter:blur(8px);overflow:hidden}
+#destination-tracker.hidden{display:none}
+#tracker-arrow-wrap{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.06);flex:0 0 auto}
+#tracker-arrow{display:block;color:var(--tracker-color,#00d4ff);font-size:25px;line-height:1;text-shadow:0 0 10px var(--tracker-color,#00d4ff);transition:transform .15s linear}
+.tracker-copy{display:grid;grid-template-rows:auto minmax(0,1fr) auto;align-items:center;justify-items:center;gap:4px;min-width:0;width:100%;height:100%;text-align:center;overflow:hidden}
+#tracker-label{font-size:9px;line-height:1.1;font-weight:900;letter-spacing:1.3px;color:var(--tracker-color,#00d4ff);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#tracker-name{width:100%;max-width:100%;font-size:13px;line-height:1.22;color:#fff;white-space:normal;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+#tracker-distance{font-size:11px;line-height:1.1;color:#9db0bd;white-space:nowrap}
+
+@media(max-width:1100px){
+  #minimap-container{width:150px;height:150px}
+  #destination-tracker{top:176px;right:12px;width:150px;height:150px;min-width:150px;max-width:150px;padding:10px;grid-template-rows:36px 1fr}
+  #tracker-arrow-wrap{width:36px;height:36px}
+  #tracker-arrow{font-size:22px}
+}
+@media(max-width:760px){
+  #minimap-container{top:max(8px,env(safe-area-inset-top));right:8px;width:108px;height:108px}
+  #destination-tracker{top:calc(max(8px,env(safe-area-inset-top)) + 116px);right:8px;width:108px;height:108px;min-width:108px;max-width:108px;padding:6px;grid-template-rows:29px 1fr;gap:3px;border-radius:11px}
+  #tracker-arrow-wrap{width:28px;height:28px}
+  #tracker-arrow{font-size:18px}
+  #tracker-label{font-size:7px;letter-spacing:.8px}
+  #tracker-name{font-size:9.5px;line-height:1.12;-webkit-line-clamp:3}
+  #tracker-distance{font-size:8.5px}
+}
+@media(max-width:480px){
+  #minimap-container{width:92px;height:92px;top:max(6px,env(safe-area-inset-top));right:6px}
+  #destination-tracker{top:calc(max(6px,env(safe-area-inset-top)) + 100px);right:6px;width:92px;height:92px;min-width:92px;max-width:92px;padding:5px;grid-template-rows:25px 1fr;gap:2px}
+  #tracker-arrow-wrap{width:24px;height:24px}
+  #tracker-arrow{font-size:15px}
+  #tracker-label{font-size:6.5px;letter-spacing:.55px}
+  #tracker-name{font-size:8.5px;line-height:1.08}
+  #tracker-distance{font-size:7.5px}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #minimap-container{width:90px;height:90px;top:5px;right:5px}
+  #destination-tracker{top:100px;right:5px;width:90px;height:90px;min-width:90px;max-width:90px;padding:5px;grid-template-rows:24px 1fr}
+}
+
+/* EMOTE SYSTEM */
+#emote-wheel{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(2,7,12,.48);backdrop-filter:blur(6px);padding:20px}
+#emote-wheel-card{width:min(420px,92vw);padding:20px;border:1px solid rgba(0,212,255,.35);border-radius:20px;background:rgba(5,12,20,.96);box-shadow:0 20px 70px rgba(0,0,0,.55);text-align:center}
+.emote-wheel-title{font-size:16px;font-weight:950;letter-spacing:.14em;color:#fff;margin-bottom:14px}.emote-wheel-title small{display:block;margin-top:5px;font-size:9px;color:#8da1b1;letter-spacing:.08em}
+.emote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.emote-grid button{min-height:88px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.045);color:#fff;font-size:31px;cursor:pointer;transition:.15s}.emote-grid button:hover,.emote-grid button:active{transform:translateY(-2px);border-color:#00d4ff;background:rgba(0,212,255,.10)}.emote-grid span{display:block;font-size:9px;font-weight:900;letter-spacing:.1em;margin-top:5px;color:#9db0bd}
+.emote-close{margin-top:13px;width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-weight:900;cursor:pointer}
+#city-drive-emote-bubble{position:fixed;transform:translate(-50%,-100%) scale(var(--emote-scale,1));z-index:75;pointer-events:none;opacity:0;transition:opacity .15s,transform .12s;padding:8px 11px;border-radius:14px;background:rgba(3,9,15,.92);border:1px solid rgba(0,212,255,.45);box-shadow:0 8px 24px rgba(0,0,0,.4);display:flex;align-items:center;gap:7px;white-space:nowrap}.emote-bubble-icon{font-size:25px}.emote-bubble-label{font-size:9px;font-weight:950;letter-spacing:.08em;color:#fff}.emote-bubble-label:before{content:''}#city-drive-emote-bubble.show{opacity:1}
+@media(max-width:600px){.emote-grid{gap:7px}.emote-grid button{min-height:78px;font-size:27px}.emote-grid span{font-size:8px}.emote-btn{font-size:9px!important;padding-inline:8px!important}}
+
+
+/* NEON BIKE RIDE mission timer card: compact 4:5 portrait panel with contained content */
+@media(max-width:760px){
+  #mission-panel{top:54px;left:14px;width:min(280px,calc(100vw - 28px));min-width:0;height:150px;max-height:150px;padding:8px 10px;overflow:hidden;}
+}
+@media(max-height:600px){
+  #mission-panel{top:42px;width:min(300px,calc(50vw - 34px));aspect-ratio:3/4;padding:6px 8px;}
+}
+
+
+/* NEON BIKE RIDE v1 actual build HUD: clear square mission guide + visible GPS */
+#mission-panel{top:82px!important;left:18px!important;width:330px!important;height:auto!important;min-height:205px!important;max-height:none!important;border-radius:0!important;padding:14px 15px!important;border:2px solid rgba(0,212,255,.62)!important;border-left:7px solid #00d4ff!important;background:linear-gradient(180deg,rgba(4,9,18,.95),rgba(5,17,28,.92))!important;box-shadow:0 0 28px rgba(0,212,255,.18),0 16px 45px rgba(0,0,0,.48)!important}
+#mission-title{font-size:.86rem!important;color:#fff!important;letter-spacing:.12em!important;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:8px;margin-bottom:8px!important}
+#mission-objective{font-size:1.05rem!important;color:#00ff9d!important;line-height:1.25!important}
+#mission-distance,#mission-help,#mission-reward{font-size:.82rem!important;line-height:1.35!important;color:#c7d2fe!important}#mission-reward{color:#facc15!important}
+#minimap-container{top:18px!important;right:18px!important;width:250px!important;height:250px!important;border-radius:16px!important;border:3px solid rgba(0,255,157,.55)!important;box-shadow:0 0 30px rgba(0,255,157,.18),0 18px 48px rgba(0,0,0,.45)!important;background:#020617!important}
+#destination-tracker{top:282px!important;right:18px!important;width:250px!important;height:118px!important;min-width:250px!important;max-width:250px!important;grid-template-columns:54px 1fr!important;grid-template-rows:1fr!important;text-align:left!important;border-radius:0!important;border:2px solid var(--tracker-color,#00d4ff)!important;background:rgba(2,6,23,.94)!important}
+#tracker-arrow-wrap{width:48px!important;height:48px!important}.tracker-copy{justify-items:start!important;text-align:left!important}#tracker-name{-webkit-line-clamp:2!important;font-size:12px!important}
+#speedometer{border-radius:0!important;border:2px solid rgba(255,255,255,.18)!important;background:rgba(2,6,23,.92)!important}.speed-value{font-size:2.9rem!important}
+#vehicle-status{border-radius:0!important;border:2px solid rgba(0,212,255,.35)!important;background:rgba(2,6,23,.92)!important}#top-bar{border-radius:0!important;background:rgba(2,6,23,.9)!important;border:2px solid rgba(0,255,157,.25)!important}
+@media(max-width:760px){#mission-panel{top:60px!important;left:8px!important;width:min(280px,calc(100vw - 132px))!important;min-height:160px!important;padding:10px!important}#mission-title{font-size:.64rem!important}#mission-objective{font-size:.82rem!important}#mission-distance,#mission-help,#mission-reward{font-size:.68rem!important}#minimap-container{width:116px!important;height:116px!important;right:6px!important;top:8px!important}#destination-tracker{top:130px!important;right:6px!important;width:116px!important;height:95px!important;min-width:116px!important;max-width:116px!important;grid-template-columns:1fr!important;grid-template-rows:28px 1fr!important;padding:5px!important}#tracker-arrow-wrap{width:26px!important;height:26px!important}#tracker-name{font-size:8.5px!important}#tracker-distance{font-size:8px!important}}
+
+
+/* NEON BIKE RIDE actual hostable build: clear mission, tracker, GPS and touch controls */
+#mission-panel{
+  display:block !important;
+  position:fixed !important;
+  left:18px !important;
+  top:82px !important;
+  width:min(360px, calc(100vw - 36px)) !important;
+  min-height:168px !important;
+  padding:14px 16px !important;
+  border-radius:8px !important;
+  border:2px solid rgba(0,212,255,.72) !important;
+  background:linear-gradient(145deg,rgba(3,8,18,.94),rgba(10,20,42,.9)) !important;
+  box-shadow:0 16px 40px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.08) !important;
+  color:#fff !important;
+  z-index:38 !important;
+}
+#mission-panel.hidden{display:block !important; opacity:1 !important; visibility:visible !important;}
+#mission-title{font-weight:1000;color:#66e7ff;letter-spacing:.08em;text-transform:uppercase;font-size:15px;margin-bottom:8px;}
+#mission-objective{font-weight:900;font-size:18px;line-height:1.2;margin-bottom:8px;}
+#mission-distance,#mission-help,#mission-reward{font-size:12px;line-height:1.35;color:#dbeafe;margin-top:6px;}
+#mission-reward{color:#ffe082;font-weight:900;}
+#destination-tracker{
+  position:fixed !important; left:18px !important; top:268px !important;
+  width:min(360px, calc(100vw - 36px)) !important; min-height:70px !important;
+  border-radius:10px !important; border:1px solid var(--tracker-color,#00d4ff) !important;
+  background:rgba(2,6,16,.86) !important; z-index:39 !important;
+}
+#tracker-arrow{display:inline-block;font-size:26px;color:var(--tracker-color,#00d4ff);filter:drop-shadow(0 0 10px var(--tracker-color,#00d4ff));}
+#minimap-container{
+  position:fixed !important; right:18px !important; top:82px !important;
+  width:260px !important; height:260px !important; padding:6px !important;
+  border-radius:12px !important; border:2px solid rgba(255,255,255,.18) !important;
+  background:rgba(2,6,16,.88) !important; z-index:37 !important;
+  box-shadow:0 16px 40px rgba(0,0,0,.52) !important;
+}
+#minimap{width:260px !important;height:260px !important;display:block !important;}
+#mobile-controls{z-index:50 !important;}
+#speedometer{z-index:40 !important;}
+@media(max-width:760px){
+  #mission-panel{left:10px!important;right:auto!important;top:68px!important;width:calc(100vw - 20px)!important;min-height:130px!important;padding:10px!important;}
+  #mission-objective{font-size:14px!important;}
+  #destination-tracker{left:10px!important;top:214px!important;width:calc(100vw - 20px)!important;min-height:54px!important;}
+  #minimap-container{right:10px!important;top:auto!important;bottom:126px!important;width:150px!important;height:150px!important;}
+  #minimap{width:150px!important;height:150px!important;}
+}
+
+
+/* NEON BIKE RIDE v25 FINAL HUD TUNING
+   Compact mission/time box, lowered KM/H box, tracker separated from map. */
+#mission-panel{
+  display:block !important;
+  position:fixed !important;
+  left:18px !important;
+  top:76px !important;
+  width:min(318px, calc(100vw - 36px)) !important;
+  min-height:0 !important;
+  height:auto !important;
+  max-height:unset !important;
+  padding:9px 11px !important;
+  border-radius:7px !important;
+  border:2px solid rgba(0,212,255,.68) !important;
+  border-left:6px solid #00d4ff !important;
+  background:linear-gradient(145deg,rgba(3,8,18,.94),rgba(7,19,34,.9)) !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.06) !important;
+  color:#fff !important;
+  z-index:38 !important;
+  overflow:hidden !important;
+}
+#mission-panel.hidden{display:block !important;opacity:1 !important;visibility:visible !important;}
+#mission-title{font-size:12px !important;line-height:1.12 !important;margin:0 0 5px !important;padding:0 0 5px !important;border-bottom:1px solid rgba(255,255,255,.12) !important;color:#6ee7ff !important;letter-spacing:.09em !important;font-weight:1000 !important;}
+#mission-objective{font-size:15px !important;line-height:1.16 !important;margin:0 0 4px !important;color:#00ff9d !important;font-weight:950 !important;}
+#mission-distance,#mission-help,#mission-reward{font-size:10.5px !important;line-height:1.22 !important;margin:3px 0 0 !important;color:#dbeafe !important;font-weight:800 !important;letter-spacing:.02em !important;}
+#mission-reward{color:#ffe082 !important;}
+#mission-timer{
+  display:inline-block !important;
+  width:auto !important;
+  max-width:100% !important;
+  margin:3px 0 0 !important;
+  padding:2px 7px !important;
+  border-radius:6px !important;
+  font-size:10px !important;
+  line-height:1.05 !important;
+  letter-spacing:.06em !important;
+  white-space:nowrap !important;
+  vertical-align:top !important;
+}
+#minimap-container{top:76px !important;right:18px !important;width:236px !important;height:236px !important;padding:5px !important;}
+#minimap{width:236px !important;height:236px !important;}
+#destination-tracker{top:326px !important;right:18px !important;width:236px !important;height:92px !important;min-width:236px !important;max-width:236px !important;padding:9px 11px !important;grid-template-columns:42px 1fr !important;grid-template-rows:1fr !important;gap:8px !important;}
+#tracker-arrow-wrap{width:38px !important;height:38px !important;}
+#tracker-arrow{font-size:22px !important;}
+#tracker-label{font-size:8px !important;}
+#tracker-name{font-size:11px !important;line-height:1.13 !important;-webkit-line-clamp:2 !important;}
+#tracker-distance{font-size:9.5px !important;}
+#speedometer{bottom:10px !important;right:24px !important;width:138px !important;padding:7px 9px !important;}
+.speed-value{font-size:2.25rem !important;line-height:.95 !important;}
+.speed-value .unit{font-size:.58rem !important;}
+.gear{font-size:.92rem !important;margin:2px 0 5px !important;}
+#vehicle-status{bottom:10px !important;left:24px !important;width:168px !important;padding:9px 10px !important;}
+#top-bar{top:12px !important;padding:6px 16px !important;gap:14px !important;}
+@media(max-width:760px){
+  #mission-panel{top:56px !important;left:8px !important;width:calc(100vw - 16px) !important;padding:8px 9px !important;}
+  #mission-title{font-size:10px !important;}
+  #mission-objective{font-size:12.5px !important;}
+  #mission-distance,#mission-help,#mission-reward{font-size:9.2px !important;}
+  #mission-timer{font-size:8.7px !important;padding:2px 5px !important;}
+  #minimap-container{right:8px !important;bottom:112px !important;top:auto !important;width:132px !important;height:132px !important;}
+  #minimap{width:132px !important;height:132px !important;}
+  #destination-tracker{left:8px !important;right:auto !important;top:184px !important;width:calc(100vw - 16px) !important;min-width:0 !important;max-width:none !important;height:50px !important;min-height:50px !important;grid-template-columns:32px 1fr !important;padding:6px 8px !important;}
+  #tracker-arrow-wrap{width:28px !important;height:28px !important;}
+  #tracker-arrow{font-size:17px !important;}
+  #speedometer{right:8px !important;bottom:8px !important;width:118px !important;padding:6px !important;}
+  .speed-value{font-size:1.8rem !important;}
+  #vehicle-status{left:8px !important;bottom:8px !important;width:145px !important;padding:6px 8px !important;font-size:.65rem !important;}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #mission-panel{top:44px !important;width:285px !important;}
+  #minimap-container{width:118px !important;height:118px !important;right:8px !important;top:44px !important;bottom:auto !important;}
+  #minimap{width:118px !important;height:118px !important;}
+  #destination-tracker{top:170px !important;right:8px !important;left:auto !important;width:190px !important;min-width:190px !important;max-width:190px !important;height:56px !important;}
+}
+
+/* v25 no-strobe safety: urgent timer changes color only, no pulsing animation. */
+#mission-timer.urgent{animation:none !important;}
+
+/* NEON BIKE RIDE v26 TIMER CROP + SPORT FONT POLISH
+   Final override: trims the countdown pill so there is no empty space and
+   gives the HUD a sharper superbike game style without external font files. */
+#hud,
+#hud *{
+  font-family:"Bahnschrift Condensed","Agency FB","Arial Narrow","Arial Black","Segoe UI",system-ui,sans-serif !important;
+  text-rendering:geometricPrecision;
+}
+#mission-panel{
+  width:min(306px, calc(100vw - 36px)) !important;
+  padding:8px 10px !important;
+  border-radius:6px !important;
+  border-left-width:5px !important;
+  background:linear-gradient(150deg,rgba(2,6,16,.95),rgba(6,18,32,.92)) !important;
+}
+#mission-title{
+  font-size:11px !important;
+  line-height:1 !important;
+  padding:0 0 4px !important;
+  margin:0 0 4px !important;
+  letter-spacing:.12em !important;
+  color:#79f2ff !important;
+  text-shadow:0 0 8px rgba(0,212,255,.34) !important;
+}
+#mission-objective{
+  font-size:14px !important;
+  line-height:1.08 !important;
+  margin:0 0 3px !important;
+  letter-spacing:.025em !important;
+  text-shadow:0 0 8px rgba(0,255,157,.25) !important;
+}
+#mission-distance,
+#mission-help,
+#mission-reward{
+  font-size:9.6px !important;
+  line-height:1.08 !important;
+  margin:2px 0 0 !important;
+  letter-spacing:.055em !important;
+}
+#mission-distance:empty,
+#mission-help:empty,
+#mission-reward:empty{display:none !important;}
+#mission-timer{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto !important;
+  min-width:0 !important;
+  max-width:max-content !important;
+  min-height:0 !important;
+  height:14px !important;
+  margin:2px 0 0 !important;
+  padding:0 6px !important;
+  border-radius:4px !important;
+  border-width:1px !important;
+  font-size:9.5px !important;
+  line-height:1 !important;
+  letter-spacing:.075em !important;
+  font-weight:1000 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  text-shadow:0 0 7px rgba(255,204,51,.28) !important;
+}
+#mission-timer.hidden{display:none !important;}
+#speedometer{
+  bottom:8px !important;
+  right:24px !important;
+  width:128px !important;
+  padding:6px 8px !important;
+  letter-spacing:.04em !important;
+}
+.speed-value{font-size:2.05rem !important;line-height:.9 !important;letter-spacing:.02em !important;}
+.speed-value .unit{font-size:.52rem !important;font-weight:950 !important;letter-spacing:.08em !important;}
+.gear{font-size:.82rem !important;line-height:1 !important;margin:1px 0 4px !important;letter-spacing:.14em !important;}
+#destination-tracker{top:328px !important;height:82px !important;padding:7px 9px !important;}
+#tracker-label{font-size:7.5px !important;letter-spacing:.12em !important;}
+#tracker-name{font-size:10.5px !important;line-height:1.08 !important;font-weight:1000 !important;letter-spacing:.035em !important;}
+#tracker-distance{font-size:8.8px !important;font-weight:950 !important;letter-spacing:.08em !important;}
+#vehicle-status,#top-bar{font-family:"Bahnschrift Condensed","Agency FB","Arial Narrow","Arial Black","Segoe UI",system-ui,sans-serif !important;}
+@media(max-width:760px){
+  #mission-panel{top:54px !important;left:8px !important;width:calc(100vw - 16px) !important;padding:7px 8px !important;}
+  #mission-title{font-size:9.2px !important;margin-bottom:3px !important;padding-bottom:3px !important;}
+  #mission-objective{font-size:11.5px !important;line-height:1.05 !important;margin-bottom:2px !important;}
+  #mission-distance,#mission-help,#mission-reward{font-size:8.2px !important;line-height:1.04 !important;margin-top:1.5px !important;}
+  #mission-timer{height:12px !important;font-size:7.8px !important;padding:0 5px !important;margin-top:1.5px !important;}
+  #destination-tracker{top:174px !important;height:46px !important;min-height:46px !important;padding:5px 7px !important;}
+  #speedometer{right:8px !important;bottom:6px !important;width:110px !important;padding:5px !important;}
+  .speed-value{font-size:1.62rem !important;}
+  .speed-value .unit{font-size:.45rem !important;}
+  .gear{font-size:.72rem !important;}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #mission-panel{top:42px !important;width:270px !important;padding:6px 8px !important;}
+  #mission-timer{height:12px !important;font-size:7.8px !important;}
+  #destination-tracker{top:162px !important;height:48px !important;}
+}
+
+
+/* NEON BIKE RIDE v27 COMPACT MISSION PANEL
+   Removes the portrait-rectangle empty space in Level 1/gameplay.
+   The panel now shrink-wraps only the visible text rows. */
+#mission-panel{
+  display:inline-flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:flex-start !important;
+  gap:2px !important;
+  width:fit-content !important;
+  min-width:190px !important;
+  max-width:min(288px, calc(100vw - 36px)) !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  padding:5px 7px !important;
+  margin:0 !important;
+  line-height:1 !important;
+  box-sizing:border-box !important;
+  overflow:visible !important;
+  border-radius:5px !important;
+  border:1.5px solid rgba(0,212,255,.72) !important;
+  border-left:4px solid #00d4ff !important;
+  background:linear-gradient(150deg,rgba(2,6,16,.96),rgba(6,18,32,.90)) !important;
+  box-shadow:0 8px 20px rgba(0,0,0,.42), inset 0 0 0 1px rgba(255,255,255,.055) !important;
+}
+#mission-panel.hidden{display:none !important;}
+#mission-panel > div{
+  flex:0 0 auto !important;
+  width:auto !important;
+  max-width:100% !important;
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  box-sizing:border-box !important;
+  overflow-wrap:anywhere !important;
+}
+#mission-panel > div:empty,
+#mission-title:empty,
+#mission-objective:empty,
+#mission-distance:empty,
+#mission-help:empty,
+#mission-reward:empty{
+  display:none !important;
+  height:0 !important;
+  min-height:0 !important;
+  max-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  overflow:hidden !important;
+}
+#mission-title{
+  font-size:9.5px !important;
+  line-height:1.02 !important;
+  margin:0 0 2px !important;
+  padding:0 0 2px !important;
+  border-bottom:1px solid rgba(255,255,255,.10) !important;
+  letter-spacing:.13em !important;
+  font-weight:1000 !important;
+  color:#79f2ff !important;
+  text-shadow:0 0 7px rgba(0,212,255,.30) !important;
+}
+#mission-objective{
+  font-size:12px !important;
+  line-height:1.02 !important;
+  margin:0 0 1px !important;
+  color:#00ff9d !important;
+  font-weight:1000 !important;
+  letter-spacing:.035em !important;
+  text-shadow:0 0 7px rgba(0,255,157,.22) !important;
+}
+#mission-distance,
+#mission-help,
+#mission-reward{
+  font-size:7.9px !important;
+  line-height:1.02 !important;
+  margin:1px 0 0 !important;
+  padding:0 !important;
+  font-weight:950 !important;
+  letter-spacing:.08em !important;
+  color:#dbeafe !important;
+}
+#mission-help{color:#9de7ff !important;}
+#mission-reward{color:#ffe082 !important;}
+#mission-timer{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto !important;
+  max-width:max-content !important;
+  min-width:0 !important;
+  height:11px !important;
+  min-height:0 !important;
+  max-height:11px !important;
+  margin:1px 0 0 !important;
+  padding:0 4px !important;
+  border-radius:3px !important;
+  font-size:7.8px !important;
+  line-height:1 !important;
+  letter-spacing:.08em !important;
+  white-space:nowrap !important;
+  vertical-align:top !important;
+  overflow:hidden !important;
+}
+#mission-timer.hidden{display:none !important;height:0 !important;max-height:0 !important;margin:0 !important;padding:0 !important;border:0 !important;}
+@media(max-width:760px){
+  #mission-panel{
+    top:52px !important;
+    left:7px !important;
+    min-width:170px !important;
+    max-width:min(248px, calc(100vw - 14px)) !important;
+    padding:4px 6px !important;
+    gap:1px !important;
+  }
+  #mission-title{font-size:8px !important;margin-bottom:1px !important;padding-bottom:1px !important;}
+  #mission-objective{font-size:10px !important;line-height:1.0 !important;}
+  #mission-distance,#mission-help,#mission-reward{font-size:6.9px !important;line-height:1.0 !important;margin-top:1px !important;}
+  #mission-timer{height:10px !important;max-height:10px !important;font-size:6.8px !important;padding:0 3px !important;}
+  #destination-tracker{top:145px !important;}
+}
+@media(max-height:520px) and (orientation:landscape){
+  #mission-panel{top:40px !important;max-width:245px !important;min-width:170px !important;padding:4px 6px !important;}
+  #destination-tracker{top:132px !important;}
+}
+
+/* v27 tracker crop too: prevents any navigation box from looking like an empty portrait rectangle. */
+#destination-tracker{
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  width:fit-content !important;
+  min-width:185px !important;
+  max-width:min(230px, calc(100vw - 36px)) !important;
+  padding:5px 7px !important;
+  gap:5px !important;
+  grid-template-columns:26px minmax(0,1fr) !important;
+  align-items:center !important;
+}
+#tracker-arrow-wrap{width:24px !important;height:24px !important;min-width:24px !important;min-height:24px !important;}
+#tracker-arrow{font-size:15px !important;line-height:1 !important;}
+#tracker-label{font-size:6.6px !important;line-height:1 !important;margin:0 !important;}
+#tracker-name{font-size:8.8px !important;line-height:1.02 !important;margin:1px 0 0 !important;}
+#tracker-distance{font-size:7.4px !important;line-height:1 !important;margin:1px 0 0 !important;}
+@media(max-width:760px){
+  #destination-tracker{top:128px !important;left:7px !important;right:auto !important;min-width:165px !important;max-width:min(218px, calc(100vw - 14px)) !important;padding:4px 6px !important;grid-template-columns:22px minmax(0,1fr) !important;}
+  #tracker-arrow-wrap{width:20px !important;height:20px !important;min-width:20px !important;min-height:20px !important;}
+  #tracker-arrow{font-size:13px !important;}
+  #tracker-label{font-size:6px !important;}
+  #tracker-name{font-size:8px !important;}
+  #tracker-distance{font-size:6.8px !important;}
+}
